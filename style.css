@@ -1,0 +1,188 @@
+/* =========================================
+   FONDO GENERAL
+========================================= */
+
+.stApp {
+    background-image: url("Fondo_Numerico.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+
+/* =========================================
+   EFECTO OSCURO SOBRE EL FONDO
+========================================= */
+
+.stApp::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 0;
+}
+
+
+/* =========================================
+   CONTENIDO ENCIMA DEL FONDO
+========================================= */
+
+.main {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================
+   TÍTULO PRINCIPAL
+========================================= */
+
+h1 {
+    color: white !important;
+    text-align: center;
+    font-size: 48px !important;
+    font-weight: bold !important;
+    margin-bottom: 10px;
+}
+
+
+/* =========================================
+   SUBTÍTULOS
+========================================= */
+
+h2, h3 {
+    color: #f1f1f1 !important;
+}
+
+
+/* =========================================
+   CARD PRINCIPAL
+========================================= */
+
+.block-container {
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(12px);
+
+    padding: 2rem;
+    margin-top: 2rem;
+
+    border-radius: 25px;
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.stTextInput input,
+.stNumberInput input {
+    border-radius: 12px !important;
+    border: none !important;
+
+    background-color: rgba(255,255,255,0.9) !important;
+
+    color: black !important;
+
+    font-size: 16px !important;
+}
+
+
+/* =========================================
+   SELECTBOX
+========================================= */
+
+.stSelectbox div[data-baseweb="select"] {
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    color: black;
+}
+
+
+/* =========================================
+   BOTÓN
+========================================= */
+
+.stButton button {
+
+    width: 100%;
+
+    background: linear-gradient(
+        135deg,
+        #4facfe,
+        #00f2fe
+    );
+
+    color: white;
+
+    border: none;
+
+    border-radius: 14px;
+
+    padding: 14px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+
+.stButton button:hover {
+
+    transform: scale(1.03);
+
+    box-shadow: 0 0 20px rgba(0,242,254,0.6);
+}
+
+
+/* =========================================
+   ALERTAS
+========================================= */
+
+.stSuccess,
+.stError,
+.stInfo {
+    border-radius: 15px;
+}
+
+
+/* =========================================
+   TABLA
+========================================= */
+
+[data-testid="stDataFrame"] {
+
+    background: rgba(255,255,255,0.9);
+
+    border-radius: 15px;
+
+    padding: 10px;
+}
+
+
+/* =========================================
+   GRÁFICA
+========================================= */
+
+.stPlotlyChart,
+.element-container {
+
+    border-radius: 20px;
+}
+
+
+/* =========================================
+   TEXTO GENERAL
+========================================= */
+
+label,
+p,
+span,
+div {
+    color: white !important;
+}
