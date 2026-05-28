@@ -1,9 +1,16 @@
+
+
+
 /* =========================================
-   FONDO GENERAL
+   FONDO PRINCIPAL
 ========================================= */
 
 .stApp {
-    background-image: url("Fondo_Numerico.jpg");
+
+    background-image:
+        linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)),
+        url("Fondo_Numerico.jpg");
+
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -11,38 +18,104 @@
 
 
 /* =========================================
-   EFECTO OSCURO SOBRE EL FONDO
+   GRID TECNOLÓGICO
 ========================================= */
 
 .stApp::before {
+
     content: "";
+
     position: fixed;
+
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
+
+    background-image:
+        linear-gradient(rgba(0,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,255,0.04) 1px, transparent 1px);
+
+    background-size: 35px 35px;
+
     z-index: 0;
 }
 
 
 /* =========================================
-   CONTENIDO ENCIMA DEL FONDO
+   SIDEBAR
 ========================================= */
 
-.main {
-    position: relative;
-    z-index: 1;
+section[data-testid="stSidebar"] {
+
+    background-image:
+        linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.95)),
+        url("Fondo_Sidebar.jpg");
+
+    background-size: cover;
+
+    border-right: 1px solid rgba(0,255,255,0.2);
 }
 
 
 /* =========================================
-   TÍTULO PRINCIPAL
+   CONTENEDOR PRINCIPAL
+========================================= */
+
+.block-container {
+
+    background: rgba(15, 23, 42, 0.70);
+
+    backdrop-filter: blur(18px);
+
+    border-radius: 28px;
+
+    padding: 2rem;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 0 20px rgba(0,255,255,0.08),
+        0 0 60px rgba(0,0,0,0.6);
+
+    animation: fadeIn 1s ease;
+}
+
+
+/* =========================================
+   ANIMACIÓN
+========================================= */
+
+@keyframes fadeIn {
+
+    from {
+
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================
+   TITULO
 ========================================= */
 
 h1 {
-    color: white !important;
+
     text-align: center;
-    font-size: 48px !important;
+
+    font-size: 52px !important;
+
+    color: #00F5FF !important;
+
     font-weight: bold !important;
-    margin-bottom: 10px;
+
+    text-shadow:
+        0 0 10px #00F5FF,
+        0 0 20px #00F5FF;
 }
 
 
@@ -51,128 +124,8 @@ h1 {
 ========================================= */
 
 h2, h3 {
-    color: #f1f1f1 !important;
-}
 
-
-/* =========================================
-   CARD PRINCIPAL
-========================================= */
-
-.block-container {
-    background: rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(12px);
-
-    padding: 2rem;
-    margin-top: 2rem;
-
-    border-radius: 25px;
-
-    border: 1px solid rgba(255,255,255,0.2);
-
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-}
-
-
-/* =========================================
-   INPUTS
-========================================= */
-
-.stTextInput input,
-.stNumberInput input {
-    border-radius: 12px !important;
-    border: none !important;
-
-    background-color: rgba(255,255,255,0.9) !important;
-
-    color: black !important;
-
-    font-size: 16px !important;
-}
-
-
-/* =========================================
-   SELECTBOX
-========================================= */
-
-.stSelectbox div[data-baseweb="select"] {
-    background-color: rgba(255,255,255,0.9);
-    border-radius: 12px;
-    color: black;
-}
-
-
-/* =========================================
-   BOTÓN
-========================================= */
-
-.stButton button {
-
-    width: 100%;
-
-    background: linear-gradient(
-        135deg,
-        #4facfe,
-        #00f2fe
-    );
-
-    color: white;
-
-    border: none;
-
-    border-radius: 14px;
-
-    padding: 14px;
-
-    font-size: 18px;
-
-    font-weight: bold;
-
-    transition: 0.3s;
-}
-
-
-.stButton button:hover {
-
-    transform: scale(1.03);
-
-    box-shadow: 0 0 20px rgba(0,242,254,0.6);
-}
-
-
-/* =========================================
-   ALERTAS
-========================================= */
-
-.stSuccess,
-.stError,
-.stInfo {
-    border-radius: 15px;
-}
-
-
-/* =========================================
-   TABLA
-========================================= */
-
-[data-testid="stDataFrame"] {
-
-    background: rgba(255,255,255,0.9);
-
-    border-radius: 15px;
-
-    padding: 10px;
-}
-
-
-/* =========================================
-   GRÁFICA
-========================================= */
-
-.stPlotlyChart,
-.element-container {
-
-    border-radius: 20px;
+    color: #7DD3FC !important;
 }
 
 
@@ -184,5 +137,127 @@ label,
 p,
 span,
 div {
-    color: white !important;
+
+    color: white;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.stTextInput input,
+.stNumberInput input {
+
+    background: rgba(2,6,23,0.9) !important;
+
+    border: 2px solid #00F5FF !important;
+
+    border-radius: 14px !important;
+
+    color: #00FFCC !important;
+
+    font-size: 17px !important;
+
+    padding: 12px !important;
+
+    font-family: Consolas;
+
+    box-shadow: 0 0 10px rgba(0,245,255,0.2);
+}
+
+
+/* =========================================
+   SELECTBOX
+========================================= */
+
+.stSelectbox div[data-baseweb="select"] {
+
+    background: rgba(2,6,23,0.9) !important;
+
+    border-radius: 14px;
+
+    border: 2px solid #00F5FF !important;
+}
+
+
+/* =========================================
+   BOTÓN
+========================================= */
+
+.stButton button {
+
+    width: 100%;
+
+    border: none;
+
+    border-radius: 16px;
+
+    padding: 14px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: linear-gradient(
+        135deg,
+        #00C6FF,
+        #0072FF
+    );
+
+    transition: all 0.3s ease;
+
+    box-shadow:
+        0 0 10px rgba(0,198,255,0.5),
+        0 0 20px rgba(0,114,255,0.5);
+}
+
+
+/* =========================================
+   HOVER BOTÓN
+========================================= */
+
+.stButton button:hover {
+
+    transform: scale(1.02);
+
+    box-shadow:
+        0 0 20px rgba(0,198,255,0.9),
+        0 0 40px rgba(0,114,255,0.9);
+}
+
+
+/* =========================================
+   DATAFRAME
+========================================= */
+
+[data-testid="stDataFrame"] {
+
+    border-radius: 18px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+
+    background: #0F172A;
+}
+
+::-webkit-scrollbar-thumb {
+
+    background: #00C6FF;
+
+    border-radius: 10px;
 }
