@@ -1,13 +1,24 @@
-# App.py
-
+# =========================================
+# IMPORTS
+# =========================================
 
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
-from sympy import symbols
-from sympy import sympify
-from sympy import lambdify
+from sympy import (
+    symbols,
+    lambdify,
+    cbrt,
+    root,
+    log
+)
+
+from sympy.parsing.sympy_parser import (
+    parse_expr,
+    standard_transformations,
+    implicit_multiplication_application
+)
 
 from metodos import *
 
@@ -26,6 +37,7 @@ st.set_page_config(
 # =========================================
 
 with open("style.css", encoding="utf-8") as f:
+
     st.markdown(
         f"<style>{f.read()}</style>",
         unsafe_allow_html=True
@@ -83,7 +95,27 @@ st.markdown(
 st.latex(r"\int_a^b f(x)\,dx")
 
 st.info(
-    "Use funciones como: x**2, sin(x), cos(x), exp(x), sqrt(x)"
+    """
+    Funciones válidas:
+
+    • x^2
+    • sen(x)
+    • cos(x)
+    • tan(x)
+
+    • exp(x)
+
+    • ln(x)
+    • log10(x)
+
+    • raiz(x+3,2)
+    • raiz(x+2,3)
+    • raiz(x+9,4)
+
+    • 1/(x+1)
+    • sen(x)/x
+    • 2x + 5
+    """
 )
 
 # =========================================
@@ -102,7 +134,7 @@ with col1:
 
     funcion = st.text_input(
         "Ingrese la función",
-        "x**2"
+        "x^2"
     )
 
     a = st.number_input(
@@ -150,7 +182,7 @@ if metodo == "Trapecio":
 elif metodo == "Simpson 1/3":
 
     st.latex(
-        r"\int_a^b f(x)dx \approx \frac{h}{3}[f(x_0)+4f(x_1)+f(x_2)]"
+        r"\int_a^b f(x)dx \approx \frac{h}{3}[f(x_0)+4f(x_1)+2f(x_2)+f(x_n)]"
     )
 
 elif metodo == "Simpson 3/8":
@@ -173,32 +205,129 @@ if st.button("🚀 Resolver"):
 
     try:
 
-        expr = sympify(funcion)
+        # =========================================
+        # TRANSFORMACIONES
+        # =========================================
 
-        f = lambdify(x, expr, "numpy")
+        transformations = (
+            standard_transformations +
+            (implicit_multiplication_application,)
+        )
+
+        # =========================================
+        # LIMPIEZA DEL TEXTO
+        # =========================================
+
+        funcion = funcion.lower()
+
+        # POTENCIAS
+        funcion = funcion.replace("^", "**")
+
+        # TRIGONOMÉTRICAS
+        funcion = funcion.replace("sen", "sin")
+        funcion = funcion.replace("tg", "tan")
+
+        # LOGARITMOS
+        funcion = funcion.replace("ln", "log")
+
+        # =========================================
+        # RAÍCES PERSONALIZADAS
+        # =========================================
+
+        # raiz2(x) -> sqrt(x)
+        funcion = funcion.replace(
+            "raiz2",
+            "sqrt"
+        )
+
+        # raiz3(x) -> cbrt(x)
+        funcion = funcion.replace(
+            "raiz3",
+            "cbrt"
+        )
+
+        # raiz4(x) -> ((x))**(1/4)
+        if "raiz4(" in funcion:
+
+            inicio = funcion.find("raiz4(")
+
+            contenido = funcion[inicio + 6:-1]
+
+            funcion = f"(({contenido}))**(1/4)"
+
+        # =========================================
+        # DICCIONARIO LOCAL
+        # =========================================
+
+        local_dict = {
+            "x": x,
+            "cbrt": cbrt,
+            "log": log,
+            "log10": lambda x: log(x, 10)
+        }
+
+        # =========================================
+        # PARSEAR EXPRESIÓN
+        # =========================================
+
+        expr = parse_expr(
+            funcion,
+            transformations=transformations,
+            local_dict=local_dict
+        )
+
+        # =========================================
+        # FUNCIÓN NUMÉRICA
+        # =========================================
+
+        f = lambdify(
+            x,
+            expr,
+            modules=["numpy"]
+        )
 
         # =========================================
         # VALIDACIONES
         # =========================================
 
         if a >= b:
-            st.error("El límite inferior debe ser menor que el superior.")
+
+            st.error(
+                "El límite inferior debe ser menor que el superior."
+            )
+
             st.stop()
 
         if metodo == "Trapecio" and n <= 0:
-            st.error("n debe ser mayor que 0.")
+
+            st.error(
+                "n debe ser mayor que 0."
+            )
+
             st.stop()
 
         if metodo == "Simpson 1/3" and n % 2 != 0:
-            st.error("Simpson 1/3 requiere un número PAR.")
+
+            st.error(
+                "Simpson 1/3 requiere un número PAR."
+            )
+
             st.stop()
 
         if metodo == "Simpson 3/8" and n % 3 != 0:
-            st.error("Simpson 3/8 requiere múltiplos de 3.")
+
+            st.error(
+                "Simpson 3/8 requiere múltiplos de 3."
+            )
+
             st.stop()
 
         if metodo == "Boole" and n % 4 != 0:
-            st.error("Boole requiere múltiplos de 4.")
+
+            st.error(
+                "Boole requiere múltiplos de 4."
+            )
+
             st.stop()
 
         # =========================================
@@ -219,7 +348,8 @@ if st.button("🚀 Resolver"):
             resultado = simpson_13(
                 f,
                 a,
-                b
+                b,
+                int(n)
             )
 
         elif metodo == "Simpson 3/8":
@@ -227,7 +357,8 @@ if st.button("🚀 Resolver"):
             resultado = simpson_38(
                 f,
                 a,
-                b
+                b,
+                int(n)
             )
 
         elif metodo == "Boole":
@@ -235,7 +366,8 @@ if st.button("🚀 Resolver"):
             resultado = boole(
                 f,
                 a,
-                b
+                b,
+                int(n)
             )
 
         # =========================================
@@ -248,9 +380,20 @@ if st.button("🚀 Resolver"):
 
         col1, col2, col3 = st.columns(3)
 
-        col1.metric("Método", metodo)
-        col2.metric("Intervalos", int(n))
-        col3.metric("Resultado", round(resultado, 6))
+        col1.metric(
+            "Método",
+            metodo
+        )
+
+        col2.metric(
+            "Intervalos",
+            int(n)
+        )
+
+        col3.metric(
+            "Resultado",
+            round(resultado, 6)
+        )
 
         # =========================================
         # TABLA
@@ -258,7 +401,11 @@ if st.button("🚀 Resolver"):
 
         st.subheader("📋 Tabla de valores")
 
-        xs_tabla = np.linspace(a, b, int(n) + 1)
+        xs_tabla = np.linspace(
+            a,
+            b,
+            int(n) + 1
+        )
 
         ys_tabla = f(xs_tabla)
 
@@ -278,11 +425,17 @@ if st.button("🚀 Resolver"):
 
         st.subheader("📈 Gráfica")
 
-        xs = np.linspace(a, b, 400)
+        xs = np.linspace(
+            a,
+            b,
+            400
+        )
 
         ys = f(xs)
 
-        fig, ax = plt.subplots(figsize=(10, 5))
+        fig, ax = plt.subplots(
+            figsize=(10, 5)
+        )
 
         fig.patch.set_facecolor('#0F172A')
 
@@ -320,7 +473,9 @@ if st.button("🚀 Resolver"):
             color="white"
         )
 
-        ax.tick_params(colors='white')
+        ax.tick_params(
+            colors='white'
+        )
 
         ax.grid(
             True,
@@ -333,6 +488,5 @@ if st.button("🚀 Resolver"):
     except Exception as e:
 
         st.error(
-            f"Error en la función o datos ingresados: {e}"
+            f"Error en la función o datos ingresados:\n{e}"
         )
-

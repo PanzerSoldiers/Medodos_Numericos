@@ -1,6 +1,3 @@
-# metodos.py
-
-
 import numpy as np
 
 # =========================================
@@ -26,66 +23,76 @@ def trapecio(f, a, b, n):
 # MÉTODO SIMPSON 1/3
 # =========================================
 
-def simpson_13(f, a, b):
+def simpson_13(f, a, b, n):
 
-    h = (b - a) / 2
+    h = (b - a) / n
 
-    x0 = a
-    x1 = a + h
-    x2 = b
+    x = np.linspace(a, b, n + 1)
 
-    resultado = (h / 3) * (
-        f(x0) +
-        4 * f(x1) +
-        f(x2)
-    )
+    suma = f(x[0]) + f(x[n])
 
-    return resultado
+    for i in range(1, n):
+
+        if i % 2 == 0:
+
+            suma += 2 * f(x[i])
+
+        else:
+
+            suma += 4 * f(x[i])
+
+    return (h / 3) * suma
 
 
 # =========================================
 # MÉTODO SIMPSON 3/8
 # =========================================
 
-def simpson_38(f, a, b):
+def simpson_38(f, a, b, n):
 
-    h = (b - a) / 3
+    h = (b - a) / n
 
-    x0 = a
-    x1 = a + h
-    x2 = a + (2 * h)
-    x3 = b
+    x = np.linspace(a, b, n + 1)
 
-    resultado = (3 * h / 8) * (
-        f(x0) +
-        3 * f(x1) +
-        3 * f(x2) +
-        f(x3)
-    )
+    suma = f(x[0]) + f(x[n])
 
-    return resultado
+    for i in range(1, n):
+
+        if i % 3 == 0:
+
+            suma += 2 * f(x[i])
+
+        else:
+
+            suma += 3 * f(x[i])
+
+    return (3 * h / 8) * suma
 
 
 # =========================================
 # MÉTODO DE BOOLE
 # =========================================
 
-def boole(f, a, b):
+def boole(f, a, b, n):
 
-    h = (b - a) / 4
+    h = (b - a) / n
 
-    x0 = a
-    x1 = a + h
-    x2 = a + (2 * h)
-    x3 = a + (3 * h)
-    x4 = b
+    x = np.linspace(a, b, n + 1)
 
-    resultado = (2 * h / 45) * (
-        7 * f(x0) +
-        32 * f(x1) +
-        12 * f(x2) +
-        32 * f(x3) +
-        7 * f(x4)
-    )
+    suma = 7 * (f(x[0]) + f(x[n]))
 
-    return resultado
+    for i in range(1, n):
+
+        if i % 2 != 0:
+
+            suma += 32 * f(x[i])
+
+        elif i % 4 == 0:
+
+            suma += 14 * f(x[i])
+
+        else:
+
+            suma += 12 * f(x[i])
+
+    return (2 * h / 45) * suma
